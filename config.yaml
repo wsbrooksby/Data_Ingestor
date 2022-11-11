@@ -16,4 +16,6 @@ ready_path: "./import/ready/"
 finished_path: "./import/finished/"
 failed_path: "./import/failed/"
 
+verbose: True
+log_sql_statements: True
 logger_config_path: "./logger.conf"

@@ -1,45 +1,28 @@
-import pymysql
-import re
-import sqlalchemy.types
+import logging
 import shutil
-from pandas import read_sql
 from sqlalchemy import create_engine
 
+LOGGER = logging.getLogger(__name__)
 
-def get_connection_engine(config, verbose=False):
+
+def get_connection_engine(config):
     """
     Build a connection engine for executing sql statements via SQLAlchemy
-
     :param config:
-    :param verbose: if true, logs all sql statements that are executed by the connection
     :return: engine (sqlalchemy object)
     """
     db_uri = f"mysql+pymysql://{config['db_user']}:{config['db_password']}@" \
              f"{config['db_host']}:{config['db_port']}/{config['db_name']}"
-    engine = create_engine(db_uri, echo=verbose)
+    engine = create_engine(db_uri, echo=config['log_sql_statements'])
     return engine
 
 
-def get_data_type_classes(data_types):
-    """
-    Since the strings for column data types cannot be passed to the to_sql dtypes argument,
-    change each string to a sqlalchemy.types class reference and pass any args it includes.
-
-    :param data_types: dict with column headers as keys, and column data types as string values
-    :return updated_data_types: values transformed to class references
-    """
-    updated_data_types = dict()
-    for key, dt in data_types.items():
-        if "(" in dt:
-            ref, num = re.match(r"(.+)\((.+)\)", dt).group(1, 2)  # Use regex to grab the class reference and the arguments, and remove the parenthesis
-            if num.isdigit():
-                num = int(num)
-            ref = getattr(sqlalchemy.types, ref)(num)
-            print(ref)
-        else:
-            ref = getattr(sqlalchemy.types, dt)
-            updated_data_types[key] = ref
-    return updated_data_types
+def move_file(file_path, directory, message=''):
+    if message:
+        LOGGER.info(f"Moving {file_path} to {directory}. Message: {message}")
+    else:
+        LOGGER.info(f"Moving {file_path} to {directory}.")
+    shutil.move(file_path, directory)
 
 
 # def get_primary_keys(conn, table_name):
