@@ -1,5 +1,7 @@
 import logging
 import shutil
+import os
+from datetime import datetime
 from sqlalchemy import create_engine
 
 LOGGER = logging.getLogger(__name__)
@@ -17,12 +19,18 @@ def get_connection_engine(config):
     return engine
 
 
-def move_file(file_path, directory, message=''):
+def move_file(filename, file_path, directory, message=''):
     if message:
         LOGGER.info(f"Moving {file_path} to {directory}. Message: {message}")
     else:
         LOGGER.info(f"Moving {file_path} to {directory}.")
-    shutil.move(file_path, directory)
+    curr_dt = datetime.now()
+    filename += curr_dt.strftime("_%Y%m%d%H%M%S.%f")  # append the current date and time to the filename to make it unique in the new directory
+    new_file_path = os.path.join(directory, filename)  # join the new directory to the filename
+    try:
+        shutil.move(file_path, new_file_path)
+    except Exception as e:
+        LOGGER.error(f'Unhandled exception occurred while attempting to move "{file_path}" to "{new_file_path}". Exception: {e}')
 
 
 # def get_primary_keys(conn, table_name):
