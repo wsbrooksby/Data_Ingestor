@@ -6,17 +6,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class EPFFile:
-    def __init__(self, filename, file_path, config):
-        # # config fields
-        # config['field_delimiter = config['field_delimiter']
-        # self.row_delimiter = config['row_delimiter']
-        # self.comment_char = config['comment_char']
-        # self.ready_path = config['ready_path']
-        # self.finished_path = config["finished_path"]
-        # self.failed_path = config["failed_path"]
-        # self.db_uri = f"mysql+pymysql://{config['db_user']}:{config['db_password']}@{config['db_host']}:{config['db_port']}/{config['db_name']}"
-        # self.verbose = config["verbose"]
-
+    def __init__(self, filename, file_path, file_structure):
         # Metadata
         self.filename = filename
         self.file_path = file_path
@@ -29,37 +19,37 @@ class EPFFile:
         # self.cleaned_row_count = 0
         # self.cleaned_data = pd.dataframe
 
-        self.parse_metadata(config)
+        self.parse_metadata(file_structure)
 
-    def parse_metadata(self, cfg):
+    def parse_metadata(self, file_structure):
         """
         Parse and format the metadata from the top of the file for column headers and datatypes, primary key, and export mode.
             - Performs validation on each row to check for correct comment characters, row labels, and number of columns.
             - Maps the data_types variable to a dictionary containing SQLAlchemy class references (needed when writing to database).
-        :param cfg:
+        :param file_structure:
         """
         failed_list = list()  # Keeps track of validation steps. Will be list of 0's if the metadata is valid, but will contain a 1 for every failed validation step.
 
         with open(self.file_path, mode="r", encoding="utf8") as raw_file:
             # The first 4 lines contain the metadata needed for MySQL,
-            file_head = [next(raw_file).replace(cfg['row_delimiter'] + "\n", "") for x in range(4)]  # Strip out the row delimiter, since these lines split correctly on \n
+            file_head = [next(raw_file).replace(file_structure['row_delimiter'] + "\n", "") for x in range(4)]  # Strip out the row delimiter, since these lines split correctly on \n
 
             # Validate correct comment characters
             for row in file_head:
-                if not row.startswith(cfg['comment_char']):
+                if not row.startswith(file_structure['comment_char']):
                     LOGGER.error(f'File "{self.filename}" does not contain proper comment characters in the first 4 rows, and may be malformed.')
                     failed_list.append(1)
 
             # Get column_headers list
-            column_headers = file_head[0].strip(cfg['comment_char']).split(cfg['field_delimiter'])  # The column headers row does not contain a label
+            column_headers = file_head[0].strip(file_structure['comment_char']).split(file_structure['field_delimiter'])  # The column headers row does not contain a label
 
             # Get data_types dictionary
             data_types, failed_list = self.validate_row_label(file_head[2], "dbTypes", self.filename, failed_list)
-            data_types = data_types.split(cfg['field_delimiter'])
+            data_types = data_types.split(file_structure['field_delimiter'])
 
             # Get primary_keys list
             primary_keys, failed_list = self.validate_row_label(file_head[1], "primaryKey", self.filename, failed_list)
-            primary_keys = primary_keys.split(cfg['field_delimiter'])
+            primary_keys = primary_keys.split(file_structure['field_delimiter'])
 
             # Get export_mode
             export_mode, failed_list = self.validate_row_label(file_head[3], "exportMode", self.filename, failed_list)
