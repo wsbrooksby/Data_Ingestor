@@ -17,6 +17,6 @@ Finally, add files that you want uploaded to your database to the `./inboxes/rea
 	- After it finishes parsing a file, the file is moved to `./inboxes/finished/` with "_datetimestamp" appended to the filename (so that it remains unique).
 	- Any files that failed to be uploaded are moved to `./inboxes/finished/` with "_datetimestamp" appended to the filename. You can check the logs for details on why they failed.
 	
-	
-### Author: William Brooksby
-### wsbrooksby@gmail.com
+----------------------------------
+Author: William Brooksby
+wsbrooksby@gmail.com
