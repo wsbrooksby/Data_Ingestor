@@ -1,18 +1,15 @@
----
 db_info:
-  db_host: "localhost"
-  db_port: "3306"
-  db_name: "max_music_data"
-  db_user: "max_ingestor"
-  db_password: "Zv2MGcoR)KpIq#oEgF9]"
-  log_sql_statements: True
-
+  db_host: 'localhost'
+  db_name: 'max_music_data'
+  db_password: 'Zv2MGcoR)KpIq#oEgF9]'
+  db_port: '3306'
+  db_user: 'max_ingestor'
+  log_sql_statements: false
 file_structure:
+  comment_char: '#'
   field_delimiter: "\u0001"
-  row_delimiter: "\u0002"  # The script contains handling for the "\n" character in each row delimiter
-  comment_char: "#"
-
+  row_delimiter: "\u0002"
 inboxes:
-  ready_path: "./inboxes/ready/"
-  finished_path: "./inboxes/finished/"
-  failed_path: "./inboxes/failed/"
+  failed_path: ./inboxes/failed/
+  finished_path: ./inboxes/finished/
+  ready_path: ./inboxes/ready/

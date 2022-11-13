@@ -73,7 +73,8 @@ def build_default_config():
             'db_port': '',
             'db_name': '',
             'db_user': '',
-            'db_password': ''
+            'db_password': '',
+            'log_sql_statements': False
         },
         'file_structure': {
             'field_delimiter': '\u0001',
@@ -81,29 +82,10 @@ def build_default_config():
             'comment_char': '#'
         },
         'inboxes': {
-            'ready_path': './import/ready/',
-            'finished_path': './import/finished/',
-            'failed_path': './import/failed/'
-        },
-        'log_sql_statements': False
+            'ready_path': './inboxes/ready/',
+            'finished_path': './inboxes/finished/',
+            'failed_path': './inboxes/failed/'
+        }
     }
     with open('config.yaml', 'w') as config_file:
         dump(config_dict, config_file)
-
-
-# def get_primary_keys(conn, table_name):
-#     """
-#     Get primary keys associated with a table
-#
-#     :param conn: Connection object for pandas
-#     :param table_name: table name that we are checking for primary keys
-#     :return: Dataframe of primary keys
-#     """
-#     existing_pk = read_sql('SELECT k.COLUMN_NAME '
-#                            'FROM information_schema.table_constraints t '
-#                            'LEFT JOIN information_schema.key_column_usage k '
-#                            'USING(constraint_name, table_schema, table_name)'
-#                            'WHERE t.constraint_type = "PRIMARY KEY" '
-#                            f'AND table_name = "{table_name}"'
-#                            , conn)
-#     return existing_pk
