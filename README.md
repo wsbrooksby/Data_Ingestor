@@ -15,7 +15,7 @@ This script requires that the 'config.yaml' script is completed before it can ru
 ## Usage
 Add EPF files that you want uploaded to your database to the `./inboxes/ready/` folder (created during installation when the script is first run). Then open a command prompt and run 'data_ingestor.py' in python 3 from the directory where it is located. After it finishes parsing a file, the file is moved to `./inboxes/finished/` with "_datetimestamp" appended to the filename to keep it unique.
 - The name of the file is used as the table name in MySQL, so make sure not to include any file extensions. If refeeding a failed or finished record, make sure to remove the timestamp from the file name.
-- Any files that failed to be uploaded are moved to `./inboxes/finished/` with "_datetimestamp" appended to the filename. You can check the logs for details on why they failed.
+- Any files that failed to be uploaded are moved to `./inboxes/failed/` with "_datetimestamp" appended to the filename. You can check the logs for details on why they failed.
 	
 ----------------------------------
 Author: William Brooksby
