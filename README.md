@@ -5,12 +5,11 @@ It does this by gathering the metadata from the header of each file regarding co
 then building a Pandas dataframe to parse and upload the data.
 
 ## Installation
+Run `pip install -r requirements.txt` to make sure that you have compatible versions of the dependencies.
 
 This script requires that the 'config.yaml' script is completed before it can run and upload data.
 - To create this file, simply run 'data_ingestor.py' once (in python 3). It will build a default 'config.yaml' file and save it in the running directory.
 - Afterwards, open the file and fill in the missing info in the 'db_info' section for connecting to your database.
-
-Run `pip install -r requirements.txt` to make sure that you have compatible versions of the dependencies.
 
 
 ## Usage
