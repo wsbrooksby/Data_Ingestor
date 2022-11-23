@@ -15,7 +15,7 @@ def get_connection_engine(db_info):
     :return: engine (sqlalchemy object)
     """
     db_uri = f"mysql+pymysql://{db_info['db_user']}:{db_info['db_password']}@" \
-             f"{db_info['db_host']}:{db_info['db_port']}/{db_info['db_name']}"
+             f"{db_info['db_host']}:{db_info['db_port']}/{db_info['db_name']}?charset=utf8mb4"
     engine = create_engine(db_uri, echo=db_info['log_sql_statements'])
     return engine
 

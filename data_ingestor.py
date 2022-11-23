@@ -109,7 +109,7 @@ def create_dataframe(epf_file, file_structure):
         io.StringIO(cleaned_file),
         sep=file_structure['field_delimiter'],
         lineterminator=file_structure['row_delimiter'],
-        header=0,
+        # header=0,  # Removed, as this was causing the first row to get skipped
         names=epf_file.column_headers,
         comment=file_structure['comment_char'],
         quoting=3,  # Ignores quotation characters.
