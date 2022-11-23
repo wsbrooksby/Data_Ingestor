@@ -117,7 +117,8 @@ def create_dataframe(epf_file, file_structure):
         on_bad_lines='skip',  # skipping rows with too many columns
         encoding='utf8'
     )
-    df = df.dropna()  # Dropping rows with too few columns/null values
+    # Removed this cleaning step due to some columns being dropped that had valid null values
+    # df = df.dropna()  # Dropping rows with too few columns/null values
 
     epf_file.cleaned_row_count = len(df.index)
     epf_file.cleaned_data = df
