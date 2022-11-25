@@ -109,7 +109,7 @@ def create_dataframe(epf_file, file_structure):
         io.StringIO(cleaned_file),
         sep=file_structure['field_delimiter'],
         lineterminator=file_structure['row_delimiter'],
-        header=0,
+        # header=0,  # Removed, as this was causing the first row to get skipped
         names=epf_file.column_headers,
         comment=file_structure['comment_char'],
         quoting=3,  # Ignores quotation characters.
@@ -117,7 +117,8 @@ def create_dataframe(epf_file, file_structure):
         on_bad_lines='skip',  # skipping rows with too many columns
         encoding='utf8'
     )
-    df = df.dropna()  # Dropping rows with too few columns/null values
+    # Removed this cleaning step due to some columns being dropped that had valid null values
+    # df = df.dropna()  # Dropping rows with too few columns/null values
 
     epf_file.cleaned_row_count = len(df.index)
     epf_file.cleaned_data = df
